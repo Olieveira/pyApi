@@ -1,3 +1,5 @@
+"""Módulo principal da API"""
+
 from fastapi import FastAPI
 import httpx
 
