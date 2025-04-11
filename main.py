@@ -10,8 +10,7 @@ async def get_repos(username: str):
         response = await client.get(url)
         data = response.json()
     
-    return [
-        {
+    return [{
             "name": repo["name"],
             "url": repo["html_url"]
         }
