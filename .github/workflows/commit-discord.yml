@@ -14,4 +14,4 @@ jobs:
               uses: tsickert/discord-webhook@v7.0.0
               with:
                   webhook-url: ${{ secrets.COMMIT_WEBHOOK }}
-                  raw-data: notify_commit.json
+                  raw-data: notify-commit.json
