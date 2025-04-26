@@ -2,7 +2,7 @@ name: Notificação de commit
 
 on:
   push:
-    branches: [main]
+    branches: ["*"]
 
 jobs:
   discord:
