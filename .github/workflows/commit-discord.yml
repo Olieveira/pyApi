@@ -1,17 +1,51 @@
 name: Notificação de commit
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    discord:
-        if: github.event_name == 'push' && github.event.head_commit.message != 'Merge pull request'
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Discord Webhook Action
-              uses: tsickert/discord-webhook@v7.0.0
-              with:
-                  webhook-url: ${{ secrets.COMMIT_WEBHOOK }}
-                  raw-data: notify-commit.json
+  discord:
+    if: github.event_name == 'push' && github.event.head_commit.message != 'Merge pull request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Construct Notification Payload
+        id: payload
+        run: |
+          echo '{
+            "content": "🚀 **Novo Commit Realizado!**",
+            "embeds": [
+              {
+                "title": "Detalhes do Commit",
+                "description": "Um novo commit foi realizado!",
+                "color": 5814783,
+                "fields": [
+                  {
+                    "name": "Autor",
+                    "value": "'${{ github.actor }}'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Mensagem do Commit",
+                    "value": "'${{ github.event.head_commit.message }}'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Branch",
+                    "value": "'${{ github.ref_name }}'",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "Notificação Automática"
+                },
+                "timestamp": "'${{ github.event.head_commit.timestamp }}'"
+              }
+            ]
+          }' > payload.json
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.COMMIT_WEBHOOK }}
+          raw-data: payload.json
