@@ -1,0 +1,31 @@
+{
+    "content": "🚀 **Novo Commit Realizado!**",
+    "embeds": [
+        {
+            "title": "Detalhes do Commit",
+            "description": "Um novo commit foi realizado no repositório `${{ github.repository }}`.",
+            "color": 5814783,
+            "fields": [
+                {
+                    "name": "Autor",
+                    "value": "${{ github.actor }}",
+                    "inline": true
+                },
+                {
+                    "name": "Mensagem do Commit",
+                    "value": "${{ github.event.head_commit.message }}",
+                    "inline": true
+                },
+                {
+                    "name": "Branch",
+                    "value": "${{ github.ref_name }}",
+                    "inline": true
+                }
+            ],
+            "footer": {
+                "text": "Notificação Automática"
+            },
+            "timestamp": "${{ github.event.head_commit.timestamp }}"
+        }
+    ]
+}

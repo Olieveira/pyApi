@@ -1,0 +1,17 @@
+name: Notificação de commit
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    discord:
+        if: github.event_name == 'push' && github.event.head_commit.message != 'Merge pull request'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Discord Webhook Action
+              uses: tsickert/discord-webhook@v7.0.0
+              with:
+                  webhook-url: ${{ secrets.COMMIT_WEBHOOK }}
+                  raw-data: notify-commit.json
