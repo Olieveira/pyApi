@@ -1,16 +1,60 @@
 name: Notificação de Pull Request
 
 on:
-    pull_request:
-        branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-    discord:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Discord Webhook Action
-              uses: tsickert/discord-webhook@v7.0.0
-              with:
-                  webhook-url: ${{ secrets.PR_WEBHOOK }}
-                  raw-data: notify-pr.json
+  discord:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Contrução da notificação
+        id: payload
+        run: |
+          echo '{
+            "content": "📢 **Novo Pull Request Criado ou Atualizado!**",
+            "embeds": [
+              {
+                "title": "Detalhes do Pull Request",
+                "description": "Um novo Pull Request foi aberto no repositório '${{ github.repository }}'.",
+                "color": 16753920,
+                "fields": [
+                  {
+                    "name": "Autor",
+                    "value": "'${{ github.actor }}'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Título do PR",
+                    "value": "'${{ github.event.pull_request.title }}'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Descrição",
+                    "value": "'${{ github.event.pull_request.body || 'Sem descrição fornecida.' }}'",
+                    "inline": false
+                  },
+                  {
+                    "name": "Branch Origem",
+                    "value": "'${{ github.event.pull_request.head.ref }}'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Branch Destino",
+                    "value": "'${{ github.event.pull_request.base.ref }}'",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "Notificação Automática - Pull Request"
+                },
+                "timestamp": "'${{ github.event.pull_request.updated_at }}'"
+              }
+            ]
+          }' > payload.json
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.PR_WEBHOOK }}
+          raw-data: payload.json
