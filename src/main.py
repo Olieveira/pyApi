@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 import httpx
 
 app = FastAPI()
-base = "https://api.coingecko.com/api/v3/"
+BASE = "https://api.coingecko.com/api/v3/"
 
 @app.get("/moedas")
 async def get_moedas():
@@ -41,7 +41,7 @@ async def moedas_by_id(id: str):
             return response.json()
     except httpx.RequestError as e:
         return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
-    
+
 @app.get("/nfts")
 async def get_nfts():
     """
@@ -77,3 +77,4 @@ async def nfts_by_id(id: str):
             return response.json()
     except httpx.RequestError as e:
         return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
+    
