@@ -29,8 +29,8 @@ async def get_moedas():
             }
         )
 
-@app.get("/moedas/{id}")
-async def moedas_by_id(id: str):
+@app.get("/moedas/{identifier}")
+async def moedas_by_id(identifier: str):
     """
     Retorna informações sobre uma moeda específica.
 
@@ -76,8 +76,8 @@ async def get_nfts():
                 }
             )
 
-@app.get("/nfts/{id}")
-async def nfts_by_id(id: str):
+@app.get("/nfts/{identifier}")
+async def nfts_by_id(identifier: str):
     """
     Retorna informações sobre um NFT específico.
 
