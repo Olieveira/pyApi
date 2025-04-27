@@ -19,7 +19,7 @@ jobs:
       - name: Análise do código com PyLint
         run: |
           pip install pylint
-          pylint $(git ls-files 'src/**/*.py')
+          pylint $(git ls-files '**.py')
       - name: Testes com pyTest
         run: |
           pip install pytest pytest-cov
