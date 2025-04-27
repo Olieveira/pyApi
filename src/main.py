@@ -42,7 +42,7 @@ async def moedas_by_id(identifier: str):
     """
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(BASE + f"coins/{id}")
+            response = await client.get(BASE + f"coins/{identifier}")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
@@ -90,7 +90,7 @@ async def nfts_by_id(identifier: str):
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(BASE + f"nfts/{id}")
+            response = await client.get(BASE + f"nfts/{identifier}")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
