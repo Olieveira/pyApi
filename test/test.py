@@ -1,6 +1,16 @@
 import pytest
 from httpx import AsyncClient
-from src.main import app
+
+"""
+Este módulo contém casos de teste para endpoints de API usando pytest e httpx.AsyncClient.
+Os testes incluem:
+- Testar o endpoint /moedas para garantir que ele retorna uma lista de moedas.
+- Testar o endpoint /moedas/{id} para validar a resposta de uma moeda específica pelo ID.
+- Testar o endpoint /nfts para garantir que ele retorna uma lista de NFTs.
+- Testar o endpoint /nfts/{id} para validar a resposta de um NFT específico pelo ID.
+- Testar o servidor de API externo para verificar sua disponibilidade.
+Cada teste é assíncrono e utiliza o marcador asyncio do pytest para compatibilidade com funções assíncronas.
+"""
 
 @pytest.mark.asyncio
 async def test_get_moedas():
@@ -26,7 +36,7 @@ async def test_get_nfts():
         response = await client.get("/nfts")
         assert response.status_code == 200
         assert isinstance(response.json(), list)
- 
+
 @pytest.mark.asyncio
 async def test_nfts_by_id():
     """Test the /nfts/{id} endpoint."""

@@ -17,11 +17,17 @@ async def get_moedas():
     """
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(base + "coins/list")
+            response = await client.get(BASE + "coins/list")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
-        return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
+        return JSONResponse(
+            status_code=503,
+            content={
+            "erro": "Serviço indisponível",
+            "detalhes": str(e)
+            }
+        )
 
 @app.get("/moedas/{id}")
 async def moedas_by_id(id: str):
@@ -36,11 +42,17 @@ async def moedas_by_id(id: str):
     """
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(base + f"coins/{id}")
+            response = await client.get(BASE + f"coins/{id}")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
-        return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
+        return JSONResponse(
+            status_code=503,
+            content={
+                "erro": "Serviço indisponível",
+                "detalhes": str(e)
+                }
+            )
 
 @app.get("/nfts")
 async def get_nfts():
@@ -52,11 +64,17 @@ async def get_nfts():
     """
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(base + "nfts/list")
+            response = await client.get(BASE + "nfts/list")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
-        return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
+        return JSONResponse(
+            status_code=503,
+            content={
+                "erro": "Serviço indisponível",
+                "detalhes": str(e)
+                }
+            )
 
 @app.get("/nfts/{id}")
 async def nfts_by_id(id: str):
@@ -72,9 +90,15 @@ async def nfts_by_id(id: str):
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(base + f"nfts/{id}")
+            response = await client.get(BASE + f"nfts/{id}")
             response.raise_for_status()
             return response.json()
     except httpx.RequestError as e:
-        return JSONResponse(status_code=503, content={"erro": "Serviço indisponível", "detalhes": str(e)})
+        return JSONResponse(
+            status_code=503,
+            content={
+                "erro": "Serviço indisponível",
+                "detalhes": str(e)
+                }
+            )
     
