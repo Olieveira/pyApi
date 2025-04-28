@@ -20,7 +20,7 @@ async def test_get_moedas():
     """Test the /moedas endpoint."""
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/moedas")
-        assert response.status_code == 20
+        assert response.status_code == 200
         assert isinstance(response.json(), list)
 
 @pytest.mark.asyncio
