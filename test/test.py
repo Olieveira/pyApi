@@ -10,12 +10,15 @@ Os testes incluem:
 
 import pytest
 from httpx import AsyncClient
+from httpx._transports.asgi import ASGITransport
 from src.main import app
+
+transport = ASGITransport(app=app)
 
 @pytest.mark.asyncio
 async def test_get_moedas():
     """Test the /moedas endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/moedas")
         assert response.status_code == 20
         assert isinstance(response.json(), list)
@@ -23,7 +26,7 @@ async def test_get_moedas():
 @pytest.mark.asyncio
 async def test_moedas_by_id():
     """Test the /moedas/{id} endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/moedas/bitcoin")
         assert response.status_code == 200
         response_json = response.json()
@@ -32,7 +35,7 @@ async def test_moedas_by_id():
 @pytest.mark.asyncio
 async def test_get_nfts():
     """Test the /nfts endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/nfts")
         assert response.status_code == 200
         assert isinstance(response.json(), list)
@@ -40,7 +43,7 @@ async def test_get_nfts():
 @pytest.mark.asyncio
 async def test_nfts_by_id():
     """Test the /nfts/{id} endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/nfts/hashmasks")
         assert response.status_code == 200
         response_json = response.json()
