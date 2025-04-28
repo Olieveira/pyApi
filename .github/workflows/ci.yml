@@ -1,15 +1,21 @@
 name: Continuous Integration
+
 on:
   push:
     branches: ["*"]
 
+permissions:
+  security-events: write
+
 jobs:
-  ci:
+  qualidade:
     name: Validação de Código e Qualidade
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout do código
+        uses: actions/checkout@v3
+      - name: Configurar Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
       - name: Instalando dependências
@@ -20,8 +26,35 @@ jobs:
         run: |
           pip install pylint
           pylint $(git ls-files '**.py')
-      - name: Testes com pyTest
+
+  testes:
+    name: Testes com pyTest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Instalando dependências
         run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           pip install pytest pytest-cov
+      - name: Executando testes com pytest
+        run: |
           pytest test/test.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
- 
+  security:
+    name: DevSecOps - Microsoft Security DevOps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+      - name: Microsoft Security DevOps
+        uses: microsoft/security-devops-action@latest
+        id: msdo
+        with:
+          categories: 'code'
+          tools: 'bandit' 
+          
