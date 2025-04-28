@@ -1,3 +1,6 @@
 fastapi==0.111.1
 httpx
 pylint
+pytest
+pytest-asyncio
+asgi-lifespan
